@@ -2,7 +2,6 @@ var ShoppingCart = function () {
 
   // an array with all of our cart items
   var cart = [];
-  
 
   var updateCart = function () {
     $(".cart-list").empty();
@@ -23,21 +22,45 @@ var ShoppingCart = function () {
   }
 
 
-  var addItem = function (item) {
-    cart.push(item);
+
+  var addItem = function ($itemName, $cost) {
+    for (let i = 0; i < cart.length; i++){
+    if ($itemName === cart[i].name) {
+        var index = i;
+       } 
+      }
+    if (index >= 0){
+      cart[index].frequency += 1;
+    }
+    else {
+       item = {name:  $itemName, cost: $cost, frequency: 1};
+      cart.push(item);
+      }
+    }
+    
     // TODO: Write this function. Remember this function has nothing to do with display. 
     // It simply is for adding an item to the cart array, no HTML involved - honest ;-)
-  }
+  
 
   var clearCart = function () {
     cart = [];
     // TODO: Write a function that clears the cart ;-)
   }
   
+var clearItem = function ($itemId){
+  if (cart[$itemId].frequency <= 1) {
+    cart.splice($itemId,1);
+  }
+  else {
+    cart[$itemId].frequency -= 1;
+  } 
+}
+
   return {
     updateCart: updateCart,
     addItem: addItem,
-    clearCart: clearCart
+    clearCart: clearCart,
+    clearItem: clearItem
   }
 };
 
@@ -57,13 +80,20 @@ $('.add-to-cart').on('click', function () {
   var $item = $(this).closest(".item");
   var $itemName = $item.data().name;
   var $cost = $item.data().price;
-  item = {name:  $itemName, cost: $cost};
+  
   // TODO: get the "item" object from the page
-  app.addItem(item);
+  app.addItem($itemName, $cost);
   app.updateCart();
 });
 
 $('.clear-cart').on('click', function () {
   app.clearCart();
+  app.updateCart();
+});
+
+$('.cart-list').on('click', '.clear-item', function () {
+  var $clearItem = $(this).closest("li");
+  var $itemId = $clearItem.attr("data-id");
+  app.clearItem($itemId);
   app.updateCart();
 });
