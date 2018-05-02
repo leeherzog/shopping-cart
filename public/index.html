@@ -151,8 +151,8 @@
   <script id="cart-template" type="text/x-handlebars-template">
     <ul>
       {{#each cart}}
-      <li data-id={{@index}}>{{name}} ({{frequency}}) - ${{cost}}</li>
-      <button type="button" class="btn clear-item">Clear Item</button>
+      <li data-id={{@index}}>{{name}} ({{frequency}}) - ${{cost}} <button type="button" class="btn clear-item">Clear Item</button></li>
+      
       {{/each}}
     </ul>
   </script>
